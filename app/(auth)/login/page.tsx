@@ -120,8 +120,9 @@ export default function App() {
           >
             <div className="flex flex-col gap-6 w-full">
               <Input
+                radius="full"
                 isRequired
-                className="w-full" // Ensure the input field takes the full width
+                className="w-full " // Ensure the input field takes the full width
                 errorMessage={({ validationDetails }) => {
                   if (validationDetails.valueMissing) {
                     return "Please enter your email";
@@ -136,6 +137,7 @@ export default function App() {
               />
               <Input
                 isRequired
+                radius="full"
                 className="w-full flex align-center" // Ensure the input field takes the full width
                 errorMessage={getPasswordError(password)}
                 isInvalid={!!getPasswordError(password)}

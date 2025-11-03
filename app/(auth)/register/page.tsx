@@ -124,10 +124,11 @@ export default function App() {
         <CardBody>
           <Form className="p-2 w-full space-y-6" onSubmit={onSubmit}>
             <div className="flex flex-col gap-6 w-full">
-              <Input isRequired label="Firstname" name="fname" />
-              <Input isRequired label="Lastname" name="lname" />
+              <Input radius="full" isRequired label="Firstname" name="fname" />
+              <Input radius="full" isRequired label="Lastname" name="lname" />
 
               <Input
+                radius="full"
                 isRequired
                 errorMessage={({ validationDetails }) =>
                   validationDetails.valueMissing
@@ -140,6 +141,7 @@ export default function App() {
               />
 
               <Input
+                radius="full"
                 isRequired
                 errorMessage={getPasswordError(password)}
                 isInvalid={!!getPasswordError(password)}
@@ -150,7 +152,9 @@ export default function App() {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              <Select isRequired label="Country" name="country">
+              <Select
+                radius="full"
+                isRequired label="Country" name="country">
                 <SelectItem
                   key="argentina"
                   startContent={
@@ -274,6 +278,7 @@ export default function App() {
               </Select>
 
               <Checkbox
+                radius="full"
                 isRequired
                 isInvalid={!!errors.terms}
                 name="terms"
@@ -293,6 +298,7 @@ export default function App() {
               )}
 
               <Button
+                radius="full"
                 isLoading={isLoading}
                 className="w-full bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg hover:shadow-xl"
                 type="submit"

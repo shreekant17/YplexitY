@@ -93,7 +93,7 @@ const Post = ({ post, userId, token, setPosts }) => {
   return (
     <>
       <CommentBox isOpen={isOpen} onClose={onClose} postId={post._id} />
-      <Card radius="none" key={post._id} className="w-auto h-full" >
+      <Card radius="none" key={post._id} className="w-screen lg:w-[500px] space-y-5 ">
         <CardHeader className="flex gap-3 justify-between">
           <User
             avatarProps={{ src: post.user.avatar }}
