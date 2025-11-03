@@ -12,10 +12,10 @@ import {
   DropdownItem,
   Dropdown,
 
-} from "@nextui-org/react";
-import { Divider } from "@nextui-org/divider";
+} from "@heroui/react";
+import { Divider } from "@heroui/divider";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { addToast } from "@heroui/react";
 import { ChatType } from "@/types";
 import { SearchIcon } from "@/components/icons";
 import NextLink from "next/link";
@@ -54,7 +54,13 @@ const ChatList = ({ userId, setSelectedChat }: ChatListProps) => {
       }
     } catch (error) {
       console.error("Error fetching chats:", error);
-      toast.error("Something went wrong.");
+      addToast({
+        title: "Error fetching chats",
+        description: "Something Went Wrong",
+        color: "danger",
+      })
+
+
     }
   };
 
@@ -77,7 +83,14 @@ const ChatList = ({ userId, setSelectedChat }: ChatListProps) => {
       }
     } catch (error) {
       // console.error("Error searching users:", error);
-      toast.error("Something went wrong.");
+
+
+      addToast({
+        title: "Error searching users",
+        description: "Something Went Wrong",
+        color: "danger",
+      })
+
     }
   };
 
@@ -164,7 +177,7 @@ const ChatList = ({ userId, setSelectedChat }: ChatListProps) => {
           }
           type="search"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e: any) => setSearchQuery(e.target.value)}
         />
       </CardHeader>
       <Divider />
@@ -177,7 +190,7 @@ const ChatList = ({ userId, setSelectedChat }: ChatListProps) => {
                 key={user.userId}
                 className="user w-full border-none h-max cursor-pointer p-4 flex justify-between align-top"
                 onPress={() => handleChatClick(user)}
-                onKeyDown={(e) => e.key === "Enter" && handleChatClick(user)}
+                onKeyDown={(e: any) => e.key === "Enter" && handleChatClick(user)}
                 radius="none"
                 color="default"
                 variant="ghost"

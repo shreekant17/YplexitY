@@ -18,10 +18,10 @@ import {
   Link,
   Image,
   Slider,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { SessionUser } from "@/types/index";
-import { toast } from "react-toastify";
+import { addToast } from "@heroui/react";
 import axios from "axios";
 
 export default function App() {
@@ -125,16 +125,31 @@ export default function App() {
         body: formData,
       });
       if (res.ok) {
-        toast.success("Account Updated successfully!");
+        addToast({
+          title: "Update Successfull",
+          description: "Account Updated successfully!",
+          color: "success",
+        })
+
         setIsLoading(false);
       } else {
         const error = await res.json();
-        toast.error(error.Message);
+        addToast({
+          title: "Update Failed",
+          description: error.Message,
+          color: "danger",
+        })
+
         setIsLoading(false);
       }
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error("Something Went Wrong");
+      addToast({
+        title: "Update Failed",
+        description: "Something Went Wrong",
+        color: "danger",
+      })
+
       setIsLoading(false);
     }
   };
@@ -288,7 +303,7 @@ export default function App() {
                 label="Country"
                 name="country"
                 selectionMode={"single"}
-                onChange={(e) => handleChange(e)} // Pass the event to
+                onChange={(e: any) => handleChange(e)} // Pass the event to
                 selectedKeys={[userData.country]}
               >
                 <SelectItem

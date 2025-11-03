@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Form, Input, Checkbox, Button } from "@nextui-org/react";
+import { Form, Input, Checkbox, Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -11,9 +11,11 @@ import {
   Divider,
   Link,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
-import { toast } from "react-toastify";
+
+import { addToast } from "@heroui/react";
+
 import { signIn } from "next-auth/react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 
@@ -82,11 +84,21 @@ export default function App() {
 
       if (result?.error) {
         setIsLoading(false);
-        toast.error(result.error); // Handle error if authentication fails
+        addToast({
+          title: "Authentication Failed",
+          description: "Something went wrong during login",
+          color: "danger",
+        })
+        // Handle error if authentication fails
       } else {
         // Redirect to a secure page (e.g., dashboard) on success
         setIsLoading(false);
-        toast.success("Login Successfull");
+        addToast({
+          title: "Authentication Successfull",
+          description: "Logged in successfully",
+          color: "success",
+        })
+
         router.push("/feed");
       }
     } catch (err) { }
@@ -123,7 +135,7 @@ export default function App() {
                 radius="full"
                 isRequired
                 className="w-full " // Ensure the input field takes the full width
-                errorMessage={({ validationDetails }) => {
+                errorMessage={({ validationDetails }: any) => {
                   if (validationDetails.valueMissing) {
                     return "Please enter your email";
                   }
@@ -145,7 +157,7 @@ export default function App() {
                 name="password"
                 type={isVisible ? "text" : "password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: any) => setPassword(e.target.value)}
                 endContent={
                   <Button
                     aria-label="toggle password visibility"

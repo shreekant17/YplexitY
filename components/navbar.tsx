@@ -8,7 +8,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,15 +20,15 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
-import { Button } from "@nextui-org/button";
-import { Kbd } from "@nextui-org/kbd";
-import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
-import { button, link as linkStyles } from "@nextui-org/theme";
+} from "@heroui/navbar";
+import { Button } from "@heroui/button";
+import { Kbd } from "@heroui/kbd";
+import { Link } from "@heroui/link";
+import { Input } from "@heroui/input";
+import { button, link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@heroui/react";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switcher";
 import {
@@ -41,7 +41,7 @@ import {
 } from "@/components/icons";
 import UploadPost from "./UploadPost";
 import { PlusIcon } from "./PlusIcon";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import { UserIcon } from "./UserIcon";
 import { ExitIcon } from "./ExitIcon";
 import { LoginIcon } from "./LoginIcon";
@@ -54,10 +54,12 @@ import React from "react";
 import { usePathname } from "next/navigation"
 import useScreenTime from "@/hooks/useScreenTime";
 import useAppOpenTracker from "@/hooks/useAppOpenTracker";
+import { TiInfo } from "react-icons/ti";
+import axios from "axios";
 
 
 export const Navbar = () => {
-  const { logout } = useAuth();
+  const { logout, guidanceMessage, setGuidanceMessage } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [fname, setFname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>();
@@ -77,18 +79,69 @@ export const Navbar = () => {
   const uid = (session?.user as SessionUser)?.id;
   useScreenTime(uid);
   useAppOpenTracker({ userId: uid, platform: "web" });
-
+  let messagePrinted = false;
   useEffect(() => {
     if (session) {
       const { fname, avatar, id } = session?.user as SessionUser;
       setFname(fname || "");
       setAvatar(avatar || undefined);
+
       //  track(id);
       // console.log(avatar)
     }
   }, [session]);
 
+  useEffect(() => {
+    if (uid && !messagePrinted) {
+      getUserAddictionScore();
+      messagePrinted = true;
+    }
+  }, [uid]);
+
   const router = useRouter();
+
+
+  const getUserAddictionScore = async () => {
+    try {
+
+      console.log("Fetching addiction score...");
+
+      const id = (session?.user as SessionUser)?.id;
+      if (!id) {
+        console.log("User ID not available.");
+        return;
+      }
+      // Step 1: Fetch usage metrics
+      const res = await axios.post(`/api/get-analytics`, { userId: id });
+      const { metrics } = res.data;
+      if (res.status !== 200) return;
+
+      // Step 2: Get ML prediction
+      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_ANALYTICS_API}/predict`, {
+        screen_time: metrics.screenTime,
+        frequency: metrics.appOpens,
+        scrolling_speed: metrics.scrollSpeed,
+      });
+
+      const addictionLevel = res2.data.prediction;
+      // setAddictionLevel(addictionLevel);
+
+      // Step 3: Get personalized message from Groq RAG API
+      const res3 = await axios.post(`/api/llm/llama`, {
+        level: addictionLevel,
+        screen_time: metrics.screenTime,
+        frequency: metrics.appOpens,
+        scroll_speed: metrics.scrollSpeed,
+      });
+      // console.log(res.data.metrics)
+      // console.log(res.data)
+      // console.log("Addiction level:", addictionLevel);
+      // console.log("AI guidance:", res3.data.reply);
+      setGuidanceMessage(res3.data.reply);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 
 
@@ -131,10 +184,13 @@ export const Navbar = () => {
             justify="end"
           >
             <NavbarItem className="hidden sm:flex gap-2">
-              <Button isIconOnly variant="faded" radius="full" onPress={onOpen}>
+              <Button isIconOnly variant="flat" radius="full" onPress={onOpen}>
                 <PlusIcon />
               </Button>
               <ThemeSwitch />
+              <Button isIconOnly variant="flat" radius="full">
+                <TiInfo size={24} />
+              </Button>
             </NavbarItem>
 
             <NavbarItem className="hidden md:flex">

@@ -11,7 +11,7 @@ import {
   ScrollShadow,
   Textarea,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { SendIcon } from "@/components/SendIcon";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { ChatType } from "@/types";

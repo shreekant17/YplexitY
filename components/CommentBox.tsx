@@ -13,8 +13,8 @@ import {
   User,
   ScrollShadow,
   Textarea,
-} from "@nextui-org/react";
-import { toast } from "react-toastify";
+} from "@heroui/react";
+import { addToast } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { SendIcon } from "@/components/SendIcon";
 import { getRelativeTime } from "@/components/getRelativeTime";
@@ -68,7 +68,12 @@ const CommentBox = ({ isOpen, onClose, postId }: CommentProps) => {
       }
     } catch (error) {
       console.error("Error fetching comments:", error);
-      toast.error("Something went wrong.");
+      addToast({
+        title: "Error fetching comments",
+        description: "Something Went Wrong",
+        color: "danger",
+      })
+
     }
   };
 
@@ -86,17 +91,30 @@ const CommentBox = ({ isOpen, onClose, postId }: CommentProps) => {
         body: formData,
       });
       if (res.ok) {
-        toast.success("Comment added successfully!");
+        addToast({
+          title: "Comment Successfull",
+          description: "Comment added successfully!",
+          color: "danger",
+        })
+
         // Refresh comments
         setComment("");
         getComments();
       } else {
         const error = await res.json();
-        toast.error(error);
+        addToast({
+          title: "Comment Failed",
+          description: "Something went wrong!",
+          color: "danger",
+        })
       }
     } catch (error) {
       console.error("Error adding comment:", error);
-      toast.error("Failed to add comment.");
+      addToast({
+        title: "Comment Failed",
+        description: "Something went wrong!",
+        color: "danger",
+      })
     }
   };
 
@@ -165,7 +183,7 @@ const CommentBox = ({ isOpen, onClose, postId }: CommentProps) => {
                   minRows={1} // Prevents it from shrinking below 1 row
                   isRequired
                   value={comment}
-                  onChange={(e) => setComment(e.target.value)}
+                  onChange={(e: any) => setComment(e.target.value)}
                   className="w-full"
                   placeholder="Write a comment..."
                   name="commentText"

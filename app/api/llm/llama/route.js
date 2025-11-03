@@ -29,7 +29,7 @@ User Data:
 - Average Scroll Speed: ${scroll_speed} px/s
 
 Task:
-Generate a short, friendly, and evidence-informed message (1–3 sentences) that helps 
+Generate a short, friendly, and evidence-informed message (1 sentence) that helps 
 the user maintain healthy digital habits.
 
 Adjust tone based on risk level:

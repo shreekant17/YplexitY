@@ -2,7 +2,7 @@
 import ChatList from "@/components/ChatList";
 import ChatWindow from "@/components/ChatWindow";
 import { SessionUser } from "@/types";
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { ChatType } from "@/types";
 import React, { useEffect, useState } from "react";

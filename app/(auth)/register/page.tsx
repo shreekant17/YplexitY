@@ -8,7 +8,7 @@ import {
   SelectItem,
   Checkbox,
   Button,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -19,9 +19,11 @@ import {
   Link,
   Image,
   Avatar,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
-import { toast } from "react-toastify";
+
+
+import { addToast } from "@heroui/react";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "/api/register";
 
@@ -91,16 +93,34 @@ export default function App() {
 
       if (response.ok) {
         setIsLoading(false);
-        toast.success("Account created successfully");
+        addToast({
+          title: "Registration Successfull",
+          description: "Account created successfully",
+          color: "success",
+        })
+
+
         router.push("/login");
       } else {
         setIsLoading(false);
         const result = await response.json();
-        toast.error(result.message);
+
+        addToast({
+          title: "Registration Failed",
+          description: result.message,
+          color: "danger",
+        })
+
+
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error("Error creating account");
+      addToast({
+        title: "Registration Failed",
+        description: "Error creating account",
+        color: "danger",
+      })
+
     }
   };
 
@@ -130,7 +150,7 @@ export default function App() {
               <Input
                 radius="full"
                 isRequired
-                errorMessage={({ validationDetails }) =>
+                errorMessage={({ validationDetails }: any) =>
                   validationDetails.valueMissing
                     ? "Please enter your email"
                     : "Please enter a valid email address"
@@ -149,7 +169,7 @@ export default function App() {
                 name="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: any) => setPassword(e.target.value)}
               />
 
               <Select

@@ -20,7 +20,7 @@ import {
   DropdownMenu,
   Avatar,
   AvatarGroup,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { HeartIcon } from "@/components/HeartIcon";
 import { ShareIcon } from "@/components/ShareIcon";

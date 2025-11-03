@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 // Define prop types for the icon component
 type LeftArrowIconProps = {

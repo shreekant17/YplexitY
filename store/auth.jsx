@@ -9,13 +9,18 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [db, setDb] = useState();
 
+  const [guidanceMessage, setGuidanceMessage] = useState();
+
   const router = useRouter();
+
+
 
   const userAuthentication = async () => {
     try {
@@ -39,6 +44,9 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(false);
           } else {
             //console.log("Authentication Passes");
+            console.log("User authenticated:", result);
+
+
             setIsLoggedIn(true);
 
           }
@@ -101,7 +109,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, logout, db }}>
+    <AuthContext.Provider value={{ isLoggedIn, logout, db, guidanceMessage, setGuidanceMessage }}>
       {children}
     </AuthContext.Provider>
   );

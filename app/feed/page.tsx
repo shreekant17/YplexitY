@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Card, Skeleton, useDisclosure } from "@nextui-org/react";
+import { addToast, Card, Skeleton, useDisclosure } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import CommentBox from "@/components/CommentBox";
 import { SessionUser } from "@/types";
 import Post from "@/components/Post";
+import { useAuth } from "@/store/auth";
 
 import useScrollSpeed from "@/hooks/useScrollSpeed";
 
@@ -45,6 +46,23 @@ const Feed: React.FC = () => {
   const [token, setToken] = useState<string>("");
   const [commentPostId, setCommentPostId] = useState<string>("");
   const observer = useRef<IntersectionObserver | null>(null);
+
+  const { guidanceMessage } = useAuth();
+
+  let messagePrinted = false;
+
+  useEffect(() => {
+
+    if (guidanceMessage && !messagePrinted) {
+      addToast({
+        title: "Welcome to the Feed!",
+        description: guidanceMessage,
+        color: "secondary",
+      })
+      messagePrinted = true;
+      console.log("MEssage printed")
+    }
+  }, [guidanceMessage]);
 
   // Fetch posts with cursor
   const getAllPosts = async (userId: string, cursorValue: string | null = null) => {

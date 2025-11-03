@@ -15,8 +15,8 @@ import {
   Image,
   RadioGroup,
   Radio,
-} from "@nextui-org/react";
-import { toast } from "react-toastify";
+} from "@heroui/react";
+import { addToast } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -73,15 +73,28 @@ const UploadPost = ({ isOpen, onClose }: UploadPostProps) => {
         body: formData,
       });
       if (res.ok) {
-        toast.success("Post created successfully!");
+        addToast({
+          title: "Upload Successfull",
+          description: "Post created successfully!",
+          color: "success",
+        })
+
         router.push("/feed");
       } else {
         const error = await res.json();
-        toast.error(error.Message);
+        addToast({
+          title: "Upload Failed",
+          description: "Something went wrong!",
+          color: "success",
+        })
       }
     } catch (error) {
       //console.error("Upload error:", error);
-      toast.error("Error creating post");
+      addToast({
+        title: "Error uploading post",
+        description: "Something went wrong!",
+        color: "success",
+      })
     }
   };
 

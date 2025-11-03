@@ -1,5 +1,5 @@
 "use client"
-import { Switch } from "@nextui-org/react";
+import { Switch } from "@heroui/react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 
