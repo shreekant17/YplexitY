@@ -71,7 +71,7 @@ export const Navbar = () => {
   }
 
   // Extract userId once the session is ready
-  
+
 
   // ✅ Call useScreenTime directly as a hook (not inside a function)
   const uid = (session?.user as SessionUser)?.id;
@@ -83,7 +83,7 @@ export const Navbar = () => {
       const { fname, avatar, id } = session?.user as SessionUser;
       setFname(fname || "");
       setAvatar(avatar || undefined);
-    //  track(id);
+      //  track(id);
       // console.log(avatar)
     }
   }, [session]);
@@ -123,7 +123,7 @@ export const Navbar = () => {
                 <p className="font-bold text-inherit">YplexitY</p>
               </NextLink>
             </NavbarBrand>
-            
+
           </NavbarContent>
 
           <NavbarContent
@@ -136,7 +136,7 @@ export const Navbar = () => {
               </Button>
               <ThemeSwitch />
             </NavbarItem>
-           
+
             <NavbarItem className="hidden md:flex">
               {status === "authenticated" ? (
                 <NavbarContent as="div" justify="end" className="hidden lg:flex">
@@ -198,7 +198,10 @@ export const Navbar = () => {
           <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
             <ThemeSwitch />
             {status === "authenticated" && (
-              <Button isIconOnly onPress={onOpen}>
+              <Button
+                variant="faded"
+                radius="full"
+                isIconOnly onPress={onOpen}>
                 <PlusIcon />
               </Button>
             )}
@@ -221,6 +224,8 @@ export const Navbar = () => {
               ></Button>
             ) : (
               <Button
+                variant="flat"
+                radius="full"
                 isIconOnly
                 onPress={() => {
                   router.push("/login");
@@ -232,7 +237,7 @@ export const Navbar = () => {
           </NavbarContent>
 
           <NavbarMenu>
-           
+
             <div className="mx-4 mt-2 flex flex-col gap-2">
               <NavbarMenuItem>
                 <Link

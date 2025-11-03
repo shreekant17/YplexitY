@@ -304,8 +304,8 @@ export default function App() {
         </CardBody>
         <Divider />
         <CardFooter>
-          <Link isExternal href="#">
-            Caution! Site Under Construction
+          <Link isExternal href="/login" className="text-sm">
+            Already have an account? Log In
           </Link>
         </CardFooter>
       </Card>

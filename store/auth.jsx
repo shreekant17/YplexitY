@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
           } else {
             //console.log("Authentication Passes");
             setIsLoggedIn(true);
-            //router.push("/feed");
+
           }
         } catch (err) {
           console.log(err);
@@ -79,8 +79,8 @@ export const AuthProvider = ({ children }) => {
           const app = initializeApp(result.firebaseConfig);
           const db = getFirestore(app);
           setDb(db);
-         // console.log("From Auth: setup fb");
-         
+          // console.log("From Auth: setup fb");
+
         }
       } else {
         const errorResult = await response.json();

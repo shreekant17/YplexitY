@@ -89,7 +89,7 @@ export default function App() {
         toast.success("Login Successfull");
         router.push("/feed");
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (
@@ -191,8 +191,8 @@ export default function App() {
         </CardBody>
         <Divider />
         <CardFooter>
-          <Link showAnchorIcon href="#">
-            Caution! Site Under Construction
+          <Link showAnchorIcon href="/register" className="text-sm">
+            Don't have an account? Sign Up
           </Link>
         </CardFooter>
       </Card>
