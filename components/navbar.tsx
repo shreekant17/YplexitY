@@ -143,6 +143,8 @@ export const Navbar = () => {
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                       <Button
+                        variant="flat"
+                        radius="full"
                         className="text-sm font-normal text-default-600 bg-default-100"
                         startContent={
                           <Image
@@ -151,7 +153,7 @@ export const Navbar = () => {
                             src={avatar}
                           />
                         }
-                        variant="flat"
+
                       >
                         {fname}
                       </Button>
@@ -183,11 +185,13 @@ export const Navbar = () => {
                 </NavbarContent>
               ) : (
                 <Button
+                  variant="flat"
+                  radius="full"
                   as={Link}
                   className="text-sm font-normal text-default-600 bg-default-100"
                   href={"/login"}
                   startContent={<UserIcon />}
-                  variant="flat"
+
                 >
                   Sign In
                 </Button>

@@ -170,6 +170,7 @@ export default function App() {
                 }
               />
               <Checkbox
+                radius="full"
                 isRequired
                 className="text-small"
                 name="remember"
