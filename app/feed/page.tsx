@@ -117,17 +117,17 @@ const Feed: React.FC = () => {
         if (index === posts.length - 1) {
           return (
             <div ref={lastPostElementRef} key={post._id}>
-              <Post post={post} userId={userId} />
+              <Post post={post} userId={userId} token={token} setPosts={setPosts} />
             </div>
           );
         } else {
-          return <Post key={post._id} post={post} userId={userId} />;
+          return <Post key={post._id} post={post} userId={userId} token={token} setPosts={setPosts} />;
         }
       })}
 
       {loading && (
         <>
-          {[...Array(2)].map((_, i) => (
+          {[...Array(9)].map((_, i) => (
             <Card
               key={i}
               radius="none"

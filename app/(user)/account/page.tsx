@@ -189,6 +189,7 @@ export default function App() {
         scroll_speed: metrics.scrollSpeed,
       });
       console.log(res.data.metrics)
+      console.log(res.data)
       console.log("Addiction level:", addictionLevel);
       console.log("AI guidance:", res3.data.reply);
       setGuidanceMessage(res3.data.reply);
@@ -231,7 +232,7 @@ export default function App() {
                 </p>
                 <p className="text-xs text-default-500">{userData.email}</p>
                 <p className="text-xs text-default-500"> Addiction level: {addictionLevel}</p>
-                <p className="text-xs text-default-500 max-w-md"> { guidanceMessage}</p>
+                <p className="text-xs text-default-500 max-w-md"> {guidanceMessage}</p>
               </div>
             </div>
             <Button size="md" color="danger" onPress={logout}>
