@@ -40,7 +40,7 @@ Adjust tone based on risk level:
 Avoid negative or harsh wording. Focus on actionable, human advice.
 
 Output Format:
-"Message: <your message>"
+<your message>
     `;
 
         // ✅ Send to Groq

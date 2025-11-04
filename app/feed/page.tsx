@@ -47,7 +47,7 @@ const Feed: React.FC = () => {
   const [commentPostId, setCommentPostId] = useState<string>("");
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const { guidanceMessage } = useAuth();
+  const { guidanceMessage, addictionLevel } = useAuth();
 
   let messagePrinted = false;
 
@@ -57,7 +57,7 @@ const Feed: React.FC = () => {
       addToast({
         title: "Welcome to the Feed!",
         description: guidanceMessage,
-        color: "secondary",
+        color: "success",
       })
       messagePrinted = true;
       console.log("MEssage printed")

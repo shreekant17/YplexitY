@@ -3,6 +3,7 @@
 import { useAuth } from "@/store/auth";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Avatar } from "@heroui/avatar";
 import {
   Card,
   CardBody,
@@ -13,7 +14,7 @@ import {
   Input,
   Select,
   SelectItem,
-  Avatar,
+
   Divider,
   Link,
   Image,
@@ -23,6 +24,7 @@ import { useSession } from "next-auth/react";
 import { SessionUser } from "@/types/index";
 import { addToast } from "@heroui/react";
 import axios from "axios";
+import { Alert } from "@heroui/alert";
 
 export default function App() {
   const { isLoggedIn } = useAuth();
@@ -42,8 +44,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: session, status } = useSession();
-  const [addictionLevel, setAddictionLevel] = useState();
-  const [guidanceMessage, setGuidanceMessage] = useState("loading...");
+
+  // const [guidanceMessage, setGuidanceMessage] = useState("loading...");
+  const { guidanceMessage, setGuidanceMessage, addictionLevel } = useAuth();
 
   useEffect(() => {
     if (status === "loading") {
@@ -80,7 +83,7 @@ export default function App() {
         }
       };
       fetchUserInfo(); // Call the async function
-      getUserAddictionScore()
+      // getUserAddictionScore()
     }
   }, [session, status, router]);
 
@@ -177,41 +180,41 @@ export default function App() {
     }
   };
 
-  const getUserAddictionScore = async () => {
-    try {
-      const { id } = session?.user as SessionUser;
+  // const getUserAddictionScore = async () => {
+  //   try {
+  //     const { id } = session?.user as SessionUser;
 
-      // Step 1: Fetch usage metrics
-      const res = await axios.post(`/api/get-analytics`, { userId: id });
-      const { metrics } = res.data;
-      if (res.status !== 200) return;
+  //     // Step 1: Fetch usage metrics
+  //     const res = await axios.post(`/api/get-analytics`, { userId: id });
+  //     const { metrics } = res.data;
+  //     if (res.status !== 200) return;
 
-      // Step 2: Get ML prediction
-      const res2 = await axios.post(`${process.env.NEXT_PUBLIC_ANALYTICS_API}/predict`, {
-        screen_time: metrics.screenTime,
-        frequency: metrics.appOpens,
-        scrolling_speed: metrics.scrollSpeed,
-      });
+  //     // Step 2: Get ML prediction
+  //     const res2 = await axios.post(`${process.env.NEXT_PUBLIC_ANALYTICS_API}/predict`, {
+  //       screen_time: metrics.screenTime,
+  //       frequency: metrics.appOpens,
+  //       scrolling_speed: metrics.scrollSpeed,
+  //     });
 
-      const addictionLevel = res2.data.prediction;
-      setAddictionLevel(addictionLevel);
+  //     const addictionLevel = res2.data.prediction;
+  //     setAddictionLevel(addictionLevel);
 
-      // Step 3: Get personalized message from Groq RAG API
-      const res3 = await axios.post(`/api/llm/llama`, {
-        level: addictionLevel,
-        screen_time: metrics.screenTime,
-        frequency: metrics.appOpens,
-        scroll_speed: metrics.scrollSpeed,
-      });
-      console.log(res.data.metrics)
-      console.log(res.data)
-      console.log("Addiction level:", addictionLevel);
-      console.log("AI guidance:", res3.data.reply);
-      setGuidanceMessage(res3.data.reply);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     // Step 3: Get personalized message from Groq RAG API
+  //     const res3 = await axios.post(`/api/llm/llama`, {
+  //       level: addictionLevel,
+  //       screen_time: metrics.screenTime,
+  //       frequency: metrics.appOpens,
+  //       scroll_speed: metrics.scrollSpeed,
+  //     });
+  //     console.log(res.data.metrics)
+  //     console.log(res.data)
+  //     console.log("Addiction level:", addictionLevel);
+  //     console.log("AI guidance:", res3.data.reply);
+  //     setGuidanceMessage(res3.data.reply);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
 
   return (
@@ -226,10 +229,12 @@ export default function App() {
             <div className="profile flex items-center gap-x-4">
               <div className="avatar flex-col justify-center">
                 <label htmlFor="file-input" className="cursor-pointer">
-                  <Image
+                  <Avatar
                     radius="full"
-                    className="object-cover lg:w-32 lg:h-32 w-16 h-16 opacity-100"
+                    className=" lg:w-32 lg:h-32 w-16 h-16 opacity-100"
                     src={imagePreview || userData.avatar || undefined} // Use imagePreview or userData.avatar
+                    name={`${userData.fname} ${userData.lname}`}
+                    showFallback
                   />
                 </label>
                 <Input
@@ -246,8 +251,8 @@ export default function App() {
                   {userData.fname + " " + userData.lname}
                 </p>
                 <p className="text-xs text-default-500">{userData.email}</p>
-                <p className="text-xs text-default-500"> Addiction level: {addictionLevel}</p>
-                <p className="text-xs text-default-500 max-w-md"> {guidanceMessage}</p>
+                {/* <p className="text-xs text-default-500"> Addiction level: {addictionLevel}</p> */}
+
               </div>
             </div>
             <Button size="md" color="danger" onPress={logout}>
@@ -255,6 +260,13 @@ export default function App() {
             </Button>
           </CardHeader>
           <Divider />
+
+          <div className="px-4">
+
+            <Alert color={addictionLevel == 0 ? "success" : addictionLevel == 1 ? "warning" : "danger"} title={guidanceMessage} />
+          </div>
+          <Divider />
+
           <CardBody>
             <div className="flex flex-col gap-6 w-full">
               <Input

@@ -23,7 +23,7 @@ import {
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import { Kbd } from "@heroui/kbd";
-import { Link } from "@heroui/link";
+import Link from "next/link";
 import { Input } from "@heroui/input";
 import { button, link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
@@ -56,10 +56,11 @@ import useScreenTime from "@/hooks/useScreenTime";
 import useAppOpenTracker from "@/hooks/useAppOpenTracker";
 import { TiInfo } from "react-icons/ti";
 import axios from "axios";
+import { addToast } from "@heroui/react";
 
 
 export const Navbar = () => {
-  const { logout, guidanceMessage, setGuidanceMessage } = useAuth();
+  const { logout, guidanceMessage, setGuidanceMessage, addictionLevel, setAddictionLevel } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [fname, setFname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>();
@@ -123,20 +124,20 @@ export const Navbar = () => {
         scrolling_speed: metrics.scrollSpeed,
       });
 
-      const addictionLevel = res2.data.prediction;
-      // setAddictionLevel(addictionLevel);
+      const resAddictionLevel = res2.data.prediction;
+      setAddictionLevel(resAddictionLevel);
 
       // Step 3: Get personalized message from Groq RAG API
       const res3 = await axios.post(`/api/llm/llama`, {
-        level: addictionLevel,
+        level: resAddictionLevel,
         screen_time: metrics.screenTime,
         frequency: metrics.appOpens,
         scroll_speed: metrics.scrollSpeed,
       });
-      // console.log(res.data.metrics)
+      console.log(res.data.metrics)
       // console.log(res.data)
       // console.log("Addiction level:", addictionLevel);
-      // console.log("AI guidance:", res3.data.reply);
+      console.log("AI guidance:", res3.data.reply);
       setGuidanceMessage(res3.data.reply);
     } catch (e) {
       console.log(e);
@@ -188,7 +189,15 @@ export const Navbar = () => {
                 <PlusIcon />
               </Button>
               <ThemeSwitch />
-              <Button isIconOnly variant="flat" radius="full">
+              <Button onPress={() => {
+                addToast({
+                  title: "Welcome to the Feed!",
+                  description: guidanceMessage,
+                  color: addictionLevel == 0 ? "success" : addictionLevel == 1 ? "warning" : "danger",
+                  timeout: 2000,
+                })
+              }
+              } isIconOnly variant="flat" radius="full">
                 <TiInfo size={24} />
               </Button>
             </NavbarItem>
@@ -301,37 +310,37 @@ export const Navbar = () => {
             <div className="mx-4 mt-2 flex flex-col gap-2">
               <NavbarMenuItem>
                 <Link
-                  size="lg"
+
                   href="/account"
                   color={"foreground"}
-                  onPress={() => setIsMenuOpen(false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Account
                 </Link>
               </NavbarMenuItem>
               <NavbarMenuItem>
                 <Link
-                  size="lg"
+
                   href="/feed"
                   color={"foreground"}
-                  onPress={() => setIsMenuOpen(false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Feed
                 </Link>
               </NavbarMenuItem>
               <NavbarMenuItem>
                 <Link
-                  size="lg"
+
                   href="/chat"
                   color={"foreground"}
-                  onPress={() => setIsMenuOpen(false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Chat
                 </Link>
               </NavbarMenuItem>
               {siteConfig.navMenuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item}-${index}`}>
-                  <Link color={"foreground"} href="#" size="lg">
+                  <Link color={"foreground"} href="#" >
                     {item.label}
                   </Link>
                 </NavbarMenuItem>
@@ -339,9 +348,9 @@ export const Navbar = () => {
               <NavbarMenuItem>
                 <Link
                   color="danger"
-                  size="lg"
+
                   href="#"
-                  onPress={() => {
+                  onClick={() => {
                     logout();
                     setIsMenuOpen(false);
                   }}

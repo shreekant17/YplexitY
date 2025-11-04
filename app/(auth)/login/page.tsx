@@ -86,7 +86,7 @@ export default function App() {
         setIsLoading(false);
         addToast({
           title: "Authentication Failed",
-          description: "Something went wrong during login",
+          description: "Invalid Credentials",
           color: "danger",
         })
         // Handle error if authentication fails

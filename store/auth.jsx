@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [db, setDb] = useState();
 
   const [guidanceMessage, setGuidanceMessage] = useState();
+  const [addictionLevel, setAddictionLevel] = useState();
 
   const router = useRouter();
 
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, logout, db, guidanceMessage, setGuidanceMessage }}>
+    <AuthContext.Provider value={{ isLoggedIn, logout, db, guidanceMessage, setGuidanceMessage, addictionLevel, setAddictionLevel }}>
       {children}
     </AuthContext.Provider>
   );
