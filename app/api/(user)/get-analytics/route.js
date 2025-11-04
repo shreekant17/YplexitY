@@ -102,7 +102,7 @@ export async function POST(req) {
                 recentScreenTime,
                 maxSpeed,
             },
-        }, {status: 200});
+        }, { status: 200 });
     } catch (error) {
         console.error("Error fetching user metrics:", error);
         return NextResponse.json(
