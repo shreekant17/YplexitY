@@ -188,7 +188,12 @@ export const Navbar = () => {
               <Button isIconOnly variant="flat" radius="full" onPress={onOpen}>
                 <PlusIcon />
               </Button>
+            </NavbarItem>
+            <NavbarItem>
               <ThemeSwitch />
+            </NavbarItem>
+            <NavbarItem>
+
               <Button onPress={() => {
                 addToast({
                   title: "Welcome to the Feed!",
@@ -202,9 +207,10 @@ export const Navbar = () => {
               </Button>
             </NavbarItem>
 
-            <NavbarItem className="hidden md:flex">
+
+            <NavbarItem className=" md:flex">
               {status === "authenticated" ? (
-                <NavbarContent as="div" justify="end" className="hidden lg:flex">
+                <NavbarContent as="div" justify="end" className=" md:flex lg:flex">
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                       <Button
@@ -212,7 +218,8 @@ export const Navbar = () => {
                         radius="full"
                         className="text-sm font-normal text-default-600 bg-default-100"
                         startContent={
-                          <Image
+                          <Avatar
+                            name={fname}
                             radius="full"
                             className="object-cover w-8 h-8 opacity-100"
                             src={avatar}
@@ -283,7 +290,8 @@ export const Navbar = () => {
                 className="text-sm font-normal text-default-600 bg-default-100"
                 onPress={() => setIsMenuOpen(!isMenuOpen)}
                 startContent={
-                  <Image
+                  <Avatar
+                    name={fname}
                     radius="full"
                     className="object-cover opacity-100"
                     src={avatar}

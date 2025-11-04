@@ -71,6 +71,8 @@ export const AuthProvider = ({ children }) => {
       if (!response.ok) {
         return;
       }
+      setIsLoggedIn(false);
+      setGuidanceMessage(null);
       await signOut({ redirect: false });
     } catch (error) {
       console.error("Error during sign-out or fetching user data:", error);

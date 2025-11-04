@@ -57,7 +57,7 @@ const Feed: React.FC = () => {
       addToast({
         title: "Welcome to the Feed!",
         description: guidanceMessage,
-        color: "success",
+        color: addictionLevel == 0 ? "success" : addictionLevel == 1 ? "warning" : "danger",
       })
       messagePrinted = true;
       console.log("MEssage printed")
